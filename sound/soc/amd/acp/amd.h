@@ -92,6 +92,8 @@ struct acp_dev_data {
 	int num_dai;
 
 	struct acp_stream *stream[ACP_MAX_STREAM];
+
+	struct snd_soc_acpi_mach *machines;
 };
 
 static inline u32 acp_readl(void __iomem *base_addr)
@@ -125,6 +127,10 @@ extern const struct snd_soc_dai_ops asoc_acp_cpu_dai_ops;
 extern int asoc_acp_i2s_probe(struct snd_soc_dai *dai);
 
 extern int acp_platform_register(struct device *dev);
+
+extern void acp_machine_select(struct acp_dev_data *adata);
+
+extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp_machines[];
 
 static inline u64 acp_get_byte_count(struct acp_dev_data *adata,
 					int dai_id, int direction)

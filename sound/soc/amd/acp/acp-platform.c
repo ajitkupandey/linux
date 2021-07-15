@@ -67,6 +67,27 @@ static const struct snd_pcm_hardware acp_pcm_hardware_capture = {
 	.periods_min = CAPTURE_MIN_NUM_PERIODS,
 	.periods_max = CAPTURE_MAX_NUM_PERIODS,
 };
+void acp_machine_select(struct acp_dev_data *adata)
+{
+	struct snd_soc_acpi_mach *mach;
+	struct platform_device *mach_dev;
+	int size;
+
+	size = sizeof(*adata->machines);
+	mach = snd_soc_acpi_find_machine(adata->machines);
+	if (!mach) {
+		dev_err(adata->dev,
+			"warning: No matching ASoC machine driver found\n");
+		return;
+	}
+
+	mach_dev = platform_device_register_data(adata->dev, mach->drv_name,
+					     PLATFORM_DEVID_NONE,
+					     mach, size);
+	if (!mach_dev)
+		dev_warn(adata->dev, "Unable to register Machine device\n");
+}
+EXPORT_SYMBOL(acp_machine_select);
 
 static irqreturn_t i2s_irq_handler(int irq, void *data)
 {
