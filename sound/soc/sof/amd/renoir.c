@@ -28,23 +28,32 @@ const struct snd_sof_dsp_ops sof_renoir_ops = {
 	.remove	= amd_sof_acp_remove,
 
 	/* Register IO */
-	.write		= sof_io_write,
-	.read		= sof_io_read,
+	.write			= sof_io_write,
+	.read			= sof_io_read,
 
 	/* Block IO */
-	.block_read     = acp_dsp_block_read,
-	.block_write    = acp_dsp_block_write,
+	.block_read		= acp_dsp_block_read,
+	.block_write		= acp_dsp_block_write,
 
 	/* Module loading */
-	.load_module    = snd_sof_parse_module_memcpy,
+	.load_module		= snd_sof_parse_module_memcpy,
 
 	/*Firmware loading */
-	.load_firmware  = snd_sof_load_firmware_memcpy,
-	.pre_fw_run     =  acp_dsp_pre_fw_run,
-	.get_bar_index  = acp_get_bar_index,
+	.load_firmware		= snd_sof_load_firmware_memcpy,
+	.pre_fw_run		=  acp_dsp_pre_fw_run,
+	.get_bar_index		= acp_get_bar_index,
 
 	/* DSP core boot */
-	.run		= acp_sof_dsp_run,
+	.run			= acp_sof_dsp_run,
+
+	/*IPC */
+	.send_msg		= acp_sof_ipc_send_msg,
+	.ipc_msg_data		= acp_sof_ipc_msg_data,
+	.ipc_pcm_params		= acp_sof_ipc_pcm_params,
+	.get_mailbox_offset	= acp_sof_ipc_get_mailbox_offset,
+	.irq_thread		= acp_sof_ipc_irq_thread,
+	.fw_ready		= sof_fw_ready,
+
 };
 EXPORT_SYMBOL(sof_renoir_ops);
 
