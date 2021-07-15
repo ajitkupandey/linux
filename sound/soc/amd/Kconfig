@@ -52,3 +52,5 @@ config SND_SOC_AMD_RENOIR_MACH
 	depends on SND_SOC_AMD_RENOIR
 	help
 	 This option enables machine driver for DMIC
+
+source "sound/soc/amd/acp/Kconfig"
