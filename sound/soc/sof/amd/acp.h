@@ -37,6 +37,14 @@
 #define ACP_DMA_CH_IOC_ENABLE			0x04
 #define ACPBUS_REG_BASE_OFFSET			ACP_DMA_CNTL_0
 
+#define ACP_DEFAULT_DRAM_LENGTH			0x00080000
+#define ACP_SCRATCH_MEMORY_ADDRESS		0x02050000
+#define ACP_SYSTEM_MEMORY_WINDOW		0x4000000
+#define ACP_IRAM_BASE_ADDRESS			0x000000
+#define ACP_DATA_RAM_BASE_ADDRESS		0x01000000
+#define ACP_DEFAULT_DRAM_LENGTH			0x00080000
+#define ACP_DRAM_PAGE_COUNT			128
+
 /* DSP hardware descriptor */
 struct sof_amd_dsp_desc {
 	int cores_num;
@@ -177,6 +185,19 @@ int  acpbus_configure_and_run_sha_dma(struct acp_dev_data *adata,
 /* ACP device probe/remove */
 int amd_sof_acp_probe(struct snd_sof_dev *sdev);
 int amd_sof_acp_remove(struct snd_sof_dev *sdev);
+
+/* DSP Loader callbacks */
+int acp_sof_dsp_run(struct snd_sof_dev *sdev);
+int acp_dsp_pre_fw_run(struct snd_sof_dev *sdev);
+int acp_get_bar_index(struct snd_sof_dev *sdev, u32 type);
+
+/* Block IO callbacks */
+int acp_dsp_block_write(struct snd_sof_dev *sdev,
+			enum snd_sof_fw_blk_type blk_type, u32 offset, void *src,
+			size_t size);
+int acp_dsp_block_read(struct snd_sof_dev *sdev,
+		       enum snd_sof_fw_blk_type blk_type, u32 offset, void *dest,
+		       size_t size);
 
 extern const struct snd_sof_dsp_ops sof_renoir_ops;
 #endif
