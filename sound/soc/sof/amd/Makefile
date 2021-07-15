@@ -6,6 +6,8 @@
 
 snd-sof-amd-acp-objs := acp.o acp-loader.o acp-ipc.o acp-pcm.o acp-stream.o
 snd-sof-amd-renoir-objs := renoir.o
+snd-sof-amd-pci-rn-objs := pci-rn.o
 
 obj-$(CONFIG_SND_SOC_SOF_AMD_COMMON) += snd-sof-amd-acp.o
 obj-$(CONFIG_SND_SOC_SOF_AMD_RENOIR) +=snd-sof-amd-renoir.o
+obj-$(CONFIG_SND_SOC_SOF_PCI_RENOIR) += snd-sof-amd-pci-rn.o
