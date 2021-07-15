@@ -13,6 +13,8 @@
 
 #include "acp-dsp-offset.h"
 #include "../sof-priv.h"
+#include "../sof-audio.h"
+#include "../ops.h"
 
 #define ACP_DSP_BAR	0
 
