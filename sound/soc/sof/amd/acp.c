@@ -633,7 +633,7 @@ int acp_reset(struct snd_sof_dev *sdev)
 
 static irqreturn_t acp_irq_thread(int irq, void *context)
 {
-	u16 acp_flag = 0;
+	u16 acp_flag = 0, dsp_flag = 0;
 	unsigned int val = 0;
 	struct snd_sof_dev *sdev = context;
 
@@ -646,7 +646,18 @@ static irqreturn_t acp_irq_thread(int irq, void *context)
 		acp_flag =  0x01;
 	}
 
-	if (acp_flag)
+	val = snd_sof_dsp_read(sdev, ACP_DSP_BAR, ACP_DSP_SW_INTR_STAT);
+	if (val != 0x00) {
+		if (val & 0x04) {
+			sof_ops(sdev)->irq_thread(irq, sdev);
+			val |= 0x04;
+			snd_sof_dsp_write(sdev, ACP_DSP_BAR,
+					  ACP_DSP_SW_INTR_STAT, val);
+			dsp_flag = 0x01;
+		}
+	}
+
+	if (acp_flag | dsp_flag)
 		return IRQ_HANDLED;
 	return IRQ_NONE;
 };
