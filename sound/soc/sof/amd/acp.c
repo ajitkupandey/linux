@@ -733,6 +733,9 @@ int amd_sof_acp_probe(struct snd_sof_dev *sdev)
 
 	schedule_work(&adata->probe_work);
 
+	INIT_LIST_HEAD(&adata->stream_list);
+	acp_dsp_stream_init(sdev);
+
 	return ret;
 out:
 	free_irq(sdev->ipc_irq, sdev);

@@ -160,6 +160,8 @@ struct acp_dev_data {
 
 	wait_queue_head_t wait_queue_sha_dma;
 	struct acp_config_dma_descriptor dscr_info[128];
+
+	struct list_head stream_list;
 };
 
 /* Generic ACP helper services */
@@ -214,6 +216,40 @@ int acp_sof_ipc_get_window_offset(struct snd_sof_dev *sdev, u32 id);
 int acp_sof_ipc_pcm_params(struct snd_sof_dev *sdev,
 			   struct snd_pcm_substream *substream,
 			   const struct sof_ipc_pcm_params_reply *reply);
+
+/* ACP - DSP  stream callbacks */
+struct acp_dsp_stream {
+	struct list_head list;
+	struct snd_sof_dev *sdev;
+	struct snd_pcm_substream *substream;
+	int stream_tag;
+	int posn_offset;
+	u64 bytescount;
+	int active;
+	int dir;
+	int irqbit;
+	int dai_id;
+	unsigned int reg_offset;
+};
+
+int acp_dsp_stream_irq(struct snd_sof_dev *sdev, u32 status);
+int config_pte_for_stream(struct snd_sof_dev *sdev,
+			  struct acp_dsp_stream *stream, int num_pages);
+int acp_dsp_stream_init(struct snd_sof_dev *sdev);
+struct acp_dsp_stream *acp_dsp_stream_get(struct snd_sof_dev *sdev);
+int acp_dsp_stream_put(struct snd_sof_dev *sdev, struct acp_dsp_stream *stream);
+
+/*
+ * DSP PCM Operations.
+ */
+int acp_pcm_open(struct snd_sof_dev *sdev,
+		struct snd_pcm_substream *substream);
+int acp_pcm_close(struct snd_sof_dev *sdev,
+		struct snd_pcm_substream *substream);
+int acp_pcm_hw_params(struct snd_sof_dev *sdev,
+		struct snd_pcm_substream *substream,
+		struct snd_pcm_hw_params *params,
+		struct sof_ipc_stream_params *ipc_params);
 
 extern const struct snd_sof_dsp_ops sof_renoir_ops;
 #endif
