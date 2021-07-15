@@ -24,3 +24,9 @@ config SND_AMD_ASOC_RENOIR
 	help
 	 This option enables Renoir I2S support on AMD platform
 
+config SND_AMD_ACP_CONFIG
+        tristate "AMD ACP configuration selection"
+        help
+         This option figure out machine configuration for ACP
+         driver modules
+
