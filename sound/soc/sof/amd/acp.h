@@ -12,6 +12,7 @@
 #define __SOF_AMD_ACP_H
 
 #include "acp-dsp-offset.h"
+#include "../sof-priv.h"
 
 #define ACP_DSP_BAR	0
 
@@ -198,6 +199,19 @@ int acp_dsp_block_write(struct snd_sof_dev *sdev,
 int acp_dsp_block_read(struct snd_sof_dev *sdev,
 		       enum snd_sof_fw_blk_type blk_type, u32 offset, void *dest,
 		       size_t size);
+
+/* IPC callbacks */
+irqreturn_t acp_sof_ipc_irq_thread(int irq, void *id);
+int acp_sof_ipc_msg_data(struct snd_sof_dev *sdev,
+			  struct snd_pcm_substream *substream,
+			  void *p, size_t sz);
+int acp_sof_ipc_send_msg(struct snd_sof_dev *sdev,
+			 struct snd_sof_ipc_msg *msg);
+int acp_sof_ipc_get_mailbox_offset(struct snd_sof_dev *sdev);
+int acp_sof_ipc_get_window_offset(struct snd_sof_dev *sdev, u32 id);
+int acp_sof_ipc_pcm_params(struct snd_sof_dev *sdev,
+			   struct snd_pcm_substream *substream,
+			   const struct sof_ipc_pcm_params_reply *reply);
 
 extern const struct snd_sof_dsp_ops sof_renoir_ops;
 #endif
